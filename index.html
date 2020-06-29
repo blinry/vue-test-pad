@@ -21,17 +21,14 @@
                         {{doc.name}}
                     </div>
                 </div>
-                <textarea class="p-4 resize-none w-full h-screen">
-{{documents.find(d => d.name == active).content}}</textarea
-                >
+                <textarea
+                    class="p-4 resize-none w-full h-screen"
+                    v-model="currentContent"
+                ></textarea>
             </div>
         </div>
 
         <script>
-            Vue.component("todo-item", {
-                props: ["text"],
-                template: "<li>{{text}}</li>",
-            })
             var app = new Vue({
                 el: "#app",
                 data: {
@@ -48,7 +45,20 @@
                     ],
                     active: "Ideas",
                 },
-                methods: {},
+                computed: {
+                    currentContent: {
+                        get() {
+                            return this.documents.find(
+                                (d) => d.name == this.active,
+                            ).content
+                        },
+                        set(val) {
+                            this.documents.find(
+                                (d) => d.name == this.active,
+                            ).content = val
+                        },
+                    },
+                },
             })
         </script>
     </body>
