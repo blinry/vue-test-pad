@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My first Vue app</title>
+        <script src="https://unpkg.com/vue"></script>
+        <link
+            href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <div id="app">
+            <div class="flex h-screen">
+                <div class="flex flex-col bg-gray-300 w-32">
+                    <div
+                        v-for="doc in documents"
+                        class="p-2 hover:bg-gray-400"
+                        v-bind:class="{'bg-gray-500 font-bold': active == doc.name}"
+                        @click="active = doc.name"
+                    >
+                        {{doc.name}}
+                    </div>
+                </div>
+                <textarea class="p-4 resize-none w-full h-screen">
+{{documents.find(d => d.name == active).content}}</textarea
+                >
+            </div>
+        </div>
+
+        <script>
+            Vue.component("todo-item", {
+                props: ["text"],
+                template: "<li>{{text}}</li>",
+            })
+            var app = new Vue({
+                el: "#app",
+                data: {
+                    documents: [
+                        {
+                            name: "Recipes",
+                            content:
+                                "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+                        },
+                        {
+                            name: "Ideas",
+                            content: "- Eat the rich\n- Eat the moon",
+                        },
+                    ],
+                    active: "Ideas",
+                },
+                methods: {},
+            })
+        </script>
+    </body>
+</html>
