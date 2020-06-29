@@ -11,14 +11,28 @@
     <body>
         <div id="app">
             <div class="flex h-screen">
-                <div class="flex flex-col bg-gray-300 w-32">
+                <div class="flex flex-col bg-gray-300 w-40">
                     <div
                         v-for="doc in documents"
-                        class="p-2 hover:bg-gray-400"
+                        class="flex justify-between p-2 hover:bg-gray-400"
                         v-bind:class="{'bg-gray-500 font-bold': active == doc.name}"
                         @click="active = doc.name"
                     >
-                        {{doc.name}}
+                        <div>
+                            {{doc.name}}
+                        </div>
+                        <div
+                            @click="deleteDocument(doc.name)"
+                            v-if="active != doc.name"
+                        >
+                            x
+                        </div>
+                    </div>
+                    <div
+                        class="p-2 hover:bg-gray-400 text-xl text-center"
+                        @click="newDocument()"
+                    >
+                        +
                     </div>
                 </div>
                 <textarea
@@ -40,7 +54,12 @@
                         },
                         {
                             name: "Ideas",
-                            content: "- Eat the rich\n- Eat the moon",
+                            content:
+                                "- Eat the rich\n- Eat the moon\n- Eat this document",
+                        },
+                        {
+                            name: "Boring name",
+                            content: "Boring content *shrug*",
                         },
                     ],
                     active: "Ideas",
@@ -57,6 +76,19 @@
                                 (d) => d.name == this.active,
                             ).content = val
                         },
+                    },
+                },
+                methods: {
+                    newDocument: function () {
+                        var name = prompt(
+                            "Please enter a name for the new document:",
+                        )
+                        this.documents.push({name: name, content: ""})
+                    },
+                    deleteDocument: function (name) {
+                        this.documents = this.documents.filter(
+                            (d) => d.name != name,
+                        )
                     },
                 },
             })
