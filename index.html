@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>My first Vue app</title>
         <script src="https://unpkg.com/vue"></script>
         <link
             href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
@@ -14,7 +13,7 @@
                 <div class="flex flex-col bg-gray-300 w-40">
                     <div
                         v-for="doc in documents"
-                        class="flex justify-between p-2 hover:bg-gray-400"
+                        class="flex justify-between p-2 hover:bg-gray-400 cursor-pointer"
                         v-bind:class="{'bg-gray-500 font-bold': active == doc.name}"
                         @click="active = doc.name"
                     >
@@ -29,7 +28,7 @@
                         </div>
                     </div>
                     <div
-                        class="p-2 hover:bg-gray-400 text-xl text-center"
+                        class="p-2 hover:bg-gray-400 text-2xl text-center cursor-pointer"
                         @click="newDocument()"
                     >
                         +
