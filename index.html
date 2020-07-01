@@ -11,22 +11,14 @@
         <div id="app">
             <div class="flex h-screen">
                 <div class="flex flex-col bg-gray-300 w-40">
-                    <div
+                    <doc-switcher
                         v-for="doc in sortedDocuments"
-                        :class="{'bg-gray-500 hover:bg-gray-500': active == doc}"
-                        class="flex hover:bg-gray-400 cursor-pointer"
-                    >
-                        <div class="flex-grow p-2" @click="active = doc">
-                            {{doc.name}}
-                        </div>
-                        <div
-                            class="p-2 hover:bg-red-500"
-                            @click="deleteDocument(doc)"
-                            v-if="active == doc"
-                        >
-                            x
-                        </div>
-                    </div>
+                        :key="doc.id"
+                        :doc="doc"
+                        :is-active="doc.id === active"
+                        @delete-document="deleteDocument"
+                        @activate-document="active = doc.id"
+                    ></doc-switcher>
                     <div
                         class="p-2 hover:bg-blue-400 text-center cursor-pointer"
                         @click="newDocument()"
@@ -36,39 +28,75 @@
                 </div>
                 <div class="w-full h-screen">
                     <textarea
-                        v-if="active"
+                        v-if="active !== null"
                         class="p-4 w-full h-screen resize-none"
-                        v-model="active.content"
+                        v-model="activeContent"
                     ></textarea>
                 </div>
             </div>
         </div>
 
         <script>
-            var app = new Vue({
+            const docSwitcher = {
+                props: ["doc", "isActive"],
+                template: `<div
+                        :class="{'bg-gray-500 hover:bg-gray-500': isActive}"
+                        class="flex hover:bg-gray-400 cursor-pointer"
+                    >
+                        <div class="flex-grow p-2" @click="$emit('activate-document', doc.id)">
+                            {{doc.name}}
+                        </div>
+                        <div
+                            class="p-2 hover:bg-red-500"
+                            @click="$emit('delete-document', doc.id)"
+                            v-if="isActive"
+                        >
+                            x
+                        </div>
+                    </div>`,
+            }
+            const app = new Vue({
                 el: "#app",
+                components: {
+                    docSwitcher,
+                },
                 data: {
                     raw: "<span style='color:red'>hi</span>",
                     documents: [
                         {
+                            id: 0,
                             name: "Recipes",
                             content:
                                 "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
                         },
                         {
+                            id: 1,
                             name: "Ideas",
                             content:
                                 "- Eat the rich\n- Eat the moon\n- Eat this document",
                         },
                         {
+                            id: 2,
                             name: "Boring name",
                             content: "Boring content *shrug*",
                         },
                     ],
-                    active: null,
+                    active: 0,
                 },
                 computed: {
-                    sortedDocuments: function () {
+                    activeContent: {
+                        get() {
+                            return this.documents.find(
+                                (d) => d.id == this.active,
+                            ).content
+                        },
+                        set(val) {
+                            this.documents.find(
+                                (d) => d.id == this.active,
+                            ).content = val
+                        },
+                    },
+                    sortedDocuments() {
                         return this.documents.sort((d1, d2) => {
                             var name1 = d1.name.toUpperCase()
                             var name2 = d2.name.toUpperCase()
@@ -82,21 +110,23 @@
                         })
                     },
                 },
-                created: function () {
-                    this.active = this.documents[0]
+                created() {
+                    this.active = this.documents[0].id
                 },
                 methods: {
-                    newDocument: function () {
+                    newDocument() {
                         var name = prompt(
                             "Please enter a name for the new document:",
                         )
-                        var newDoc = {name: name, content: ""}
-                        this.active = newDoc
+                        var newDoc = {id: 42, name: name, content: ""} // FIXME
+                        this.active = newDoc.id
                         this.documents.push(newDoc)
                     },
-                    deleteDocument: function (doc) {
+                    deleteDocument(id) {
                         this.active = null
-                        this.documents = this.documents.filter((d) => d != doc)
+                        this.documents = this.documents.filter(
+                            (d) => d.id != id,
+                        )
                     },
                 },
             })
