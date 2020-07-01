@@ -10,34 +10,23 @@
     <body>
         <div id="app">
             <div class="flex h-screen">
-                <div class="flex flex-col bg-gray-300 w-40">
-                    <doc-switcher
-                        v-for="doc in sortedDocuments"
-                        :key="doc.id"
-                        :doc="doc"
-                        :is-active="doc.id === active"
-                        @delete-document="deleteDocument"
-                        @activate-document="active = doc.id"
-                    ></doc-switcher>
-                    <div
-                        class="p-2 hover:bg-blue-400 text-center cursor-pointer"
-                        @click="newDocument()"
-                    >
-                        +
-                    </div>
-                </div>
-                <div class="w-full h-screen">
-                    <textarea
-                        v-if="active !== null"
-                        class="p-4 w-full h-screen resize-none"
-                        v-model="activeContent"
-                    ></textarea>
-                </div>
+                <sidebar
+                    @activate-document="id => active = id"
+                    @delete-document="deleteDocument"
+                    @new-document="newDocument"
+                    :docs="sortedDocuments"
+                    :active="active"
+                ></sidebar>
+                <textarea
+                    v-if="active !== null"
+                    class="p-4 w-full h-screen resize-none"
+                    v-model="activeContent"
+                ></textarea>
             </div>
         </div>
 
         <script>
-            const docSwitcher = {
+            Vue.component("doc-switcher", {
                 props: ["doc", "isActive"],
                 template: `<div
                         :class="{'bg-gray-500 hover:bg-gray-500': isActive}"
@@ -54,12 +43,29 @@
                             x
                         </div>
                     </div>`,
-            }
+            })
+            Vue.component("sidebar", {
+                props: ["docs", "active"],
+                template: `
+                <div class="flex flex-col bg-gray-300 w-40">
+                    <doc-switcher
+                        v-for="doc in docs"
+                        :key="doc.id"
+                        :doc="doc"
+                        :is-active="doc.id === active"
+                        @delete-document="$emit('delete-document', doc.id)"
+                        @activate-document="$emit('activate-document', doc.id)"
+                    ></doc-switcher>
+                    <div
+                        class="p-2 hover:bg-blue-400 text-center cursor-pointer"
+                        @click="$emit('new-document')"
+                    >
+                        +
+                    </div>
+                </div>`,
+            })
             const app = new Vue({
                 el: "#app",
-                components: {
-                    docSwitcher,
-                },
                 data: {
                     raw: "<span style='color:red'>hi</span>",
                     documents: [
