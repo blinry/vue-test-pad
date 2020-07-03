@@ -3,7 +3,7 @@
         <div class="flex h-screen">
             <sidebar></sidebar>
             <textarea
-                class="p-4 w-full h-screen resize-none"
+                class="p-4 w-full h-screen resize-none font-mono"
                 v-model="activeContent"
             ></textarea>
         </div>
