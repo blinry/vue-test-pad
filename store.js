@@ -4,7 +4,9 @@ import Vuex from "vuex"
 Vue.use(Vuex)
 
 function uuidv4() {
-    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function(c) {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (
+        c,
+    ) {
         var r = (Math.random() * 16) | 0,
             v = c == "x" ? r : (r & 0x3) | 0x8
         return v.toString(16)
@@ -34,10 +36,10 @@ export default new Vuex.Store({
         active: 0,
     },
     getters: {
-        activeDocument: state => {
-            return state.documents.find(d => d.id == state.active)
+        activeDocument: (state) => {
+            return state.documents.find((d) => d.id == state.active)
         },
-        sortedDocuments: state => {
+        sortedDocuments: (state) => {
             return state.documents.sort((d1, d2) => {
                 var name1 = d1.name.toUpperCase()
                 var name2 = d2.name.toUpperCase()
@@ -66,11 +68,11 @@ export default new Vuex.Store({
                 if (state.active == id) {
                     state.active = null
                 }
-                state.documents = state.documents.filter(d => d.id != id)
+                state.documents = state.documents.filter((d) => d.id != id)
             }
         },
         update(state, content) {
-            state.documents.find(d => d.id == state.active).content = content
+            state.documents.find((d) => d.id == state.active).content = content
         },
     },
 })

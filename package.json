@@ -1,25 +1,29 @@
 {
-  "name": "vue-test",
-  "version": "1.0.0",
-  "description": "",
-  "main": "script.js",
-  "dependencies": {
-    "vue": "^2.6.11",
-    "vue-hot-reload-api": "^2.3.4",
-    "vue-template-compiler": "^2.6.11",
-    "vuex": "^3.5.1"
-  },
-  "devDependencies": {
-    "parcel-bundler": "^1.12.4",
-    "@vue/component-compiler-utils": "^3.1.2"
-  },
-  "scripts": {
-    "dev": "parcel index.html"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "alias": {
-    "vue": "./node_modules/vue/dist/vue.common.js"
-  }
+    "name": "vue-test",
+    "version": "1.0.0",
+    "description": "",
+    "main": "script.js",
+    "dependencies": {
+        "vue": "^2.6.11",
+        "vue-hot-reload-api": "^2.3.4",
+        "vue-template-compiler": "^2.6.11",
+        "vuex": "^3.5.1"
+    },
+    "devDependencies": {
+        "parcel-bundler": "^1.12.4",
+        "prettier": "^2.0.5",
+        "@vue/component-compiler-utils": "^3.1.2"
+    },
+    "scripts": {
+        "dev": "parcel index.html",
+        "lint": "prettier --ignore-path .gitignore --check .",
+        "lint:fix": "prettier --ignore-path .gitignore --write .",
+        "pversion": "prettier --version"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "alias": {
+        "vue": "./node_modules/vue/dist/vue.common.js"
+    }
 }
