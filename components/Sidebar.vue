@@ -16,8 +16,8 @@
                 {{ doc.name }}
             </div>
             <div
-                class="p-2 hover:bg-red-500"
                 v-if="activeDocument && doc.id === activeDocument.id"
+                class="p-2 hover:bg-red-500"
                 @click="$store.commit('delete', doc.id)"
             >
                 x
@@ -35,7 +35,7 @@
 <script>
 import {mapGetters} from "vuex"
 
-module.exports = {
+export default {
     computed: {
         ...mapGetters(["sortedDocuments", "activeDocument"]),
     },

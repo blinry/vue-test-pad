@@ -1,18 +1,18 @@
 <template>
     <div id="app">
         <div class="flex h-screen">
-            <sidebar></sidebar>
+            <sidebar />
             <textarea
-                class="p-4 w-full h-screen resize-none font-mono"
                 v-model="activeContent"
-            ></textarea>
+                class="p-4 w-full h-screen resize-none font-mono"
+            />
         </div>
     </div>
 </template>
 
 <script>
 import Sidebar from "./Sidebar.vue"
-import {mapState, mapGetters} from "vuex"
+import {mapGetters} from "vuex"
 
 export default {
     components: {Sidebar},

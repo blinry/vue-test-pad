@@ -10,14 +10,21 @@
         "vuex": "^3.5.1"
     },
     "devDependencies": {
+        "@vue/component-compiler-utils": "^3.1.2",
+        "eslint": "^7.5.0",
+        "eslint-plugin-vue": "^7.0.0-alpha.10",
+        "npm-run-all": "^4.1.5",
         "parcel-bundler": "^1.12.4",
-        "prettier": "^2.0.5",
-        "@vue/component-compiler-utils": "^3.1.2"
+        "prettier": "^2.0.5"
     },
     "scripts": {
         "dev": "parcel index.html",
-        "lint": "prettier --ignore-path .gitignore --check .",
-        "lint:fix": "prettier --ignore-path .gitignore --write .",
+        "lint": "npm-run-all --parallel lint:*",
+        "fix": "npm-run-all --parallel fix:*",
+        "lint:prettier": "prettier --ignore-path .gitignore --check .",
+        "lint:eslint": "eslint --ignore-path .gitignore --ignore-pattern .eslintrc.js --ext vue,js .",
+        "fix:prettier": "prettier --ignore-path .gitignore --write .",
+        "fix:eslint": "eslint --fix --ignore-path .gitignore --ignore-pattern .eslintrc.js --ext vue,js .",
         "pversion": "prettier --version"
     },
     "keywords": [],
